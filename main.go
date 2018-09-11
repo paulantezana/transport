@@ -5,7 +5,10 @@ import (
 	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	"os"
+    "github.com/paulantezana/transport/api"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/models"
+    "os"
 )
 
 func main() {
@@ -14,7 +17,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Initialize migration database
-	migration()
+	//migration()
 
 	// COR
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -77,8 +80,7 @@ func migration() {
 	db.First(&cg)
 	co := models.Setting{
 		Item:       10,
-		Company:    "REQUIREMENT WEB",
-		Quotations: 3,
+		Company:    "TRANSPORT WEB",
 		Logo:       "static/logo.png",
 	}
 	// Insert database

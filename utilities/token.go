@@ -2,7 +2,9 @@ package utilities
 
 import (
 	"github.com/dgrijalva/jwt-go"
-	"log"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/models"
+    "log"
 	"time"
 )
 

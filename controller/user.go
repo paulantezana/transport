@@ -5,7 +5,11 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"github.com/labstack/echo"
-	"io"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/models"
+    "github.com/paulantezana/transport/utilities"
+    "html/template"
+    "io"
 	"math/rand"
 	"net/http"
 	"os"
@@ -447,7 +451,7 @@ func ResetPasswordUser(c echo.Context) error {
 	}
 
 	// Set new password
-	cc := sha256.Sum256([]byte(user.DNI + user.UserName))
+	cc := sha256.Sum256([]byte(string(user.ID) + user.UserName))
 	pwd := fmt.Sprintf("%x", cc)
 	user.Password = pwd
 
@@ -458,7 +462,7 @@ func ResetPasswordUser(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, utilities.Response{
 		Success: true,
-		Message: fmt.Sprintf("La contraseña del usuario se reseto extosamente. ahora su numevacontraseña es %s", user.DNI+user.UserName),
+		Message: fmt.Sprintf("La contraseña del usuario se reseto extosamente. ahora su numevacontraseña es %s", string(user.ID) +user.UserName),
 	})
 }
 

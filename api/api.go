@@ -3,6 +3,9 @@ package api
 import (
     "github.com/labstack/echo"
     "github.com/labstack/echo/middleware"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/controller"
+    "github.com/paulantezana/transport/utilities"
     "net/http"
 )
 
