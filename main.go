@@ -17,7 +17,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// Initialize migration database
-	//migration()
+	migration()
 
 	// COR
 	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
@@ -53,6 +53,7 @@ func migration() {
 	db.Debug().AutoMigrate(
 		&models.User{},
 		&models.Mobile{},
+		&models.Setting{},
 	)
 
 	// -------------------------------------------------------------

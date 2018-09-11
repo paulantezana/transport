@@ -41,4 +41,11 @@ func ProtectedApi(e *echo.Echo) {
     ar.POST("/user/upload/avatar", controller.UploadAvatarUser)
     ar.POST("/user/reset/password", controller.ResetPasswordUser)
     ar.POST("/user/change/password", controller.ChangePasswordUser)
+
+    // Global settings
+    ar.POST("/setting/global", controller.GetGlobalSettings)
+    ar.GET("/setting", controller.GetSetting)
+    ar.PUT("/setting", controller.UpdateSetting)
+    ar.POST("/setting/upload/logo", controller.UploadLogoSetting)
+    ar.GET("/setting/download/logo", controller.DownloadLogoSetting)
 }

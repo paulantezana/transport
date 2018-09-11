@@ -109,7 +109,7 @@ func ForgotSearch(c echo.Context) error {
 	}
 
 	// SEND EMAIL
-	err = config.SendEmail(user.Email, fmt.Sprint(key)+" es el código de recuperación de tu cuenta en RQSystem", buf.String())
+	err = config.SendEmail(user.Email, fmt.Sprintf("%d es el código de recuperación de tu cuenta en %s", key, config.GetConfig().Email.Name), buf.String())
 	if err != nil {
 		c.NoContent(http.StatusInternalServerError)
 	}
@@ -208,9 +208,6 @@ func GetUsers(c echo.Context) error {
 
 	// Find users
 	if err := db.Where("lower(user_name) LIKE lower(?)", "%"+request.Search+"%").
-		Or("lower(dni) LIKE lower(?)", "%"+request.Search+"%").
-		Or("lower(last_name) LIKE lower(?)", "%"+request.Search+"%").
-		Or("lower(first_name) LIKE lower(?)", "%"+request.Search+"%").
 		Order("id desc").
 		Offset(offset).Limit(request.Limit).Find(&users).
 		Offset(-1).Limit(-1).Count(&total).
