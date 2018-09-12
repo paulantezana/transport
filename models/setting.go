@@ -6,6 +6,6 @@ type Setting struct {
 	Email          string `json:"email"`
 	Identification string `json:"identification"`
 	Logo           string `json:"logo"`
-	City           string `json:"city"`
+    Address        string `json:"address"`
 	Item           uint   `json:"item"`
 }

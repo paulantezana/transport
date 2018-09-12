@@ -5,11 +5,11 @@ import (
 	"crypto/sha256"
 	"fmt"
 	"github.com/labstack/echo"
-    "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/models"
-    "github.com/paulantezana/transport/utilities"
-    "html/template"
-    "io"
+	"github.com/paulantezana/transport/config"
+	"github.com/paulantezana/transport/models"
+	"github.com/paulantezana/transport/utilities"
+	"html/template"
+	"io"
 	"math/rand"
 	"net/http"
 	"os"
@@ -459,7 +459,7 @@ func ResetPasswordUser(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, utilities.Response{
 		Success: true,
-		Message: fmt.Sprintf("La contraseña del usuario se reseto extosamente. ahora su numevacontraseña es %s", string(user.ID) +user.UserName),
+		Message: fmt.Sprintf("La contraseña del usuario se reseto extosamente. ahora su numevacontraseña es %s", string(user.ID)+user.UserName),
 	})
 }
 
@@ -518,4 +518,3 @@ func ChangePasswordUser(c echo.Context) error {
 		Message: fmt.Sprintf("La contraseña del usuario %s se cambio exitosamente", aux.UserName),
 	})
 }
-

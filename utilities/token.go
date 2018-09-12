@@ -1,15 +1,15 @@
 package utilities
 
 import (
-    "github.com/dgrijalva/jwt-go"
-    "github.com/paulantezana/transport/config"
-    "log"
-    "time"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/paulantezana/transport/config"
+	"log"
+	"time"
 )
 
 // Claim model use un JWT Authentication
 type Claim struct {
-	User interface{}`json:"user"`
+	User interface{} `json:"user"`
 	jwt.StandardClaims
 }
 

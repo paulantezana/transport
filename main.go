@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-    "github.com/paulantezana/transport/api"
-    "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/models"
-    "os"
+	"github.com/paulantezana/transport/api"
+	"github.com/paulantezana/transport/config"
+	"github.com/paulantezana/transport/models"
+	"os"
 )
 
 func main() {
@@ -44,7 +44,6 @@ func main() {
 	// Starting server echo
 	e.Logger.Fatal(e.Start(":" + port))
 }
-
 
 // migration Init migration database
 func migration() {
@@ -84,9 +83,9 @@ func migration() {
 	cg := models.Setting{}
 	db.First(&cg)
 	co := models.Setting{
-		Item:       10,
-		Company:    "TRANSPORT WEB",
-		Logo:       "static/logo.png",
+		Item:    10,
+		Company: "TRANSPORT WEB",
+		Logo:    "static/logo.png",
 	}
 
 	// Insert database

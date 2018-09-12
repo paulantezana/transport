@@ -1,88 +1,88 @@
 package api
 
 import (
-    "fmt"
-    "github.com/labstack/echo"
-    "github.com/labstack/echo/middleware"
-    "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/controller"
-    "github.com/paulantezana/transport/utilities"
-    "gopkg.in/olahol/melody.v1"
-    "net/http"
+	"fmt"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"github.com/paulantezana/transport/config"
+	"github.com/paulantezana/transport/controller"
+	"github.com/paulantezana/transport/utilities"
+	"gopkg.in/olahol/melody.v1"
+	"net/http"
 )
 
 // PublicApi public routes
 func PublicApi(e *echo.Echo) {
-    e.GET("/", func(context echo.Context) error {
-        return context.NoContent(http.StatusOK)
-    })
-    pb := e.Group("/api/v1/public")
+	e.GET("/", func(context echo.Context) error {
+		return context.NoContent(http.StatusOK)
+	})
+	pb := e.Group("/api/v1/public")
 
-    // Company user
-    pb.POST("/user/login", controller.Login)
-    pb.POST("/user/forgot/search", controller.ForgotSearch)
-    pb.POST("/user/forgot/validate", controller.ForgotValidate)
-    pb.POST("/user/forgot/change", controller.ForgotChange)
+	// Company user
+	pb.POST("/user/login", controller.Login)
+	pb.POST("/user/forgot/search", controller.ForgotSearch)
+	pb.POST("/user/forgot/validate", controller.ForgotValidate)
+	pb.POST("/user/forgot/change", controller.ForgotChange)
 
-    // Conductor user
-    pb.POST("/mobile/login",controller.MobileLogin)
+	// Conductor user
+	pb.POST("/mobile/login", controller.MobileLogin)
 }
 
 // =======================================================================================
 // SocketApi
 // Es la comunicacion principal de todo los dispositibos con el servidor central
 // EL CORE del sistema
-func SocketApi(e *echo.Echo)  {
-    m := melody.New()
+func SocketApi(e *echo.Echo) {
+	m := melody.New()
 
-    // Create new group routes ws api
-    ws := e.Group("/api/v1/ws")
+	// Create new group routes ws api
+	ws := e.Group("/api/v1/ws")
 
-    // Routes
-    ws.GET("/location", func(c echo.Context) error {
-        m.HandleRequest(c.Response(),c.Request())
-        return nil
-    })
+	// Routes
+	ws.GET("/location", func(c echo.Context) error {
+		m.HandleRequest(c.Response(), c.Request())
+		return nil
+	})
 
-    // Response message
-    m.HandleMessage(func(s *melody.Session, msg []byte) {
-        fmt.Println(msg)
-        m.Broadcast(msg)
-    })
+	// Response message
+	m.HandleMessage(func(s *melody.Session, msg []byte) {
+		fmt.Println(msg)
+		m.Broadcast(msg)
+	})
 }
 
 // ProtectedApi protected routes
 func ProtectedApi(e *echo.Echo) {
-    ar := e.Group("/api/v1")
+	ar := e.Group("/api/v1")
 
-    // Configure middleware with the custom claims type
-    con := middleware.JWTConfig{
-        Claims:     &utilities.Claim{},
-        SigningKey: []byte(config.GetConfig().Server.Key),
-    }
-    ar.Use(middleware.JWTWithConfig(con))
+	// Configure middleware with the custom claims type
+	con := middleware.JWTConfig{
+		Claims:     &utilities.Claim{},
+		SigningKey: []byte(config.GetConfig().Server.Key),
+	}
+	ar.Use(middleware.JWTWithConfig(con))
 
-    // Crud user
-    ar.POST("/user/all", controller.GetUsers)
-    ar.POST("/user/by/id", controller.GetUserByID)
-    ar.POST("/user/create", controller.CreateUser)
-    ar.PUT("/user/update", controller.UpdateUser)
-    ar.DELETE("/user/delete", controller.DeleteUser)
-    ar.POST("/user/upload/avatar", controller.UploadAvatarUser)
-    ar.POST("/user/reset/password", controller.ResetPasswordUser)
-    ar.POST("/user/change/password", controller.ChangePasswordUser)
+	// Crud user
+	ar.POST("/user/all", controller.GetUsers)
+	ar.POST("/user/by/id", controller.GetUserByID)
+	ar.POST("/user/create", controller.CreateUser)
+	ar.PUT("/user/update", controller.UpdateUser)
+	ar.DELETE("/user/delete", controller.DeleteUser)
+	ar.POST("/user/upload/avatar", controller.UploadAvatarUser)
+	ar.POST("/user/reset/password", controller.ResetPasswordUser)
+	ar.POST("/user/change/password", controller.ChangePasswordUser)
 
-    // Crud user
-    ar.POST("/mobile/all", controller.GetMobiles)
-    ar.POST("/mobile/by/id", controller.GetMobileByID)
-    ar.POST("/mobile/create", controller.CreateMobile)
-    ar.PUT("/mobile/update", controller.UpdateMobile)
-    ar.DELETE("/mobile/delete", controller.DeleteMobile)
+	// Crud user
+	ar.POST("/mobile/all", controller.GetMobiles)
+	ar.POST("/mobile/by/id", controller.GetMobileByID)
+	ar.POST("/mobile/create", controller.CreateMobile)
+	ar.PUT("/mobile/update", controller.UpdateMobile)
+	ar.DELETE("/mobile/delete", controller.DeleteMobile)
 
-    // Global settings
-    ar.POST("/setting/global", controller.GetGlobalSettings)
-    ar.GET("/setting", controller.GetSetting)
-    ar.PUT("/setting", controller.UpdateSetting)
-    ar.POST("/setting/upload/logo", controller.UploadLogoSetting)
-    ar.GET("/setting/download/logo", controller.DownloadLogoSetting)
+	// Global settings
+	ar.POST("/setting/global", controller.GetGlobalSettings)
+	ar.GET("/setting", controller.GetSetting)
+	ar.PUT("/setting", controller.UpdateSetting)
+	ar.POST("/setting/upload/logo", controller.UploadLogoSetting)
+	ar.GET("/setting/download/logo", controller.DownloadLogoSetting)
 }
