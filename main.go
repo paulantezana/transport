@@ -61,9 +61,11 @@ func migration() {
 	// -------------------------------------------------------------
 	usr := models.User{}
 	db.First(&usr)
+
 	// hash password
 	cc := sha256.Sum256([]byte("admin"))
 	pwd := fmt.Sprintf("%x", cc)
+
 	// create model
 	user := models.User{
 		UserName: "admin",
@@ -71,6 +73,7 @@ func migration() {
 		Profile:  "admin",
 		Email:    "yoel.antezana@gmail.com",
 	}
+
 	// insert database
 	if usr.ID == 0 {
 		db.Create(&user)
@@ -84,9 +87,9 @@ func migration() {
 		Company:    "TRANSPORT WEB",
 		Logo:       "static/logo.png",
 	}
+
 	// Insert database
 	if cg.ID == 0 {
 		db.Create(&co)
 	}
 }
-

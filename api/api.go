@@ -22,6 +22,12 @@ func PublicApi(e *echo.Echo) {
     pb.POST("/user/forgot/change", controller.ForgotChange)
 }
 
+// SocketApi custom
+func SocketApi(e *echo.Echo)  {
+    
+}
+
+// ProtectedApi protected routes
 func ProtectedApi(e *echo.Echo) {
     ar := e.Group("/api/v1")
 
