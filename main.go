@@ -33,6 +33,7 @@ func main() {
 	// API
 	api.PublicApi(e)
 	api.ProtectedApi(e)
+	api.SocketApi(e)
 
 	// Custom port
 	port := os.Getenv("PORT")

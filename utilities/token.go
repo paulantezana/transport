@@ -1,21 +1,20 @@
 package utilities
 
 import (
-	"github.com/dgrijalva/jwt-go"
+    "github.com/dgrijalva/jwt-go"
     "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/models"
     "log"
-	"time"
+    "time"
 )
 
 // Claim model use un JWT Authentication
 type Claim struct {
-	User models.User `json:"user"`
+	User interface{}`json:"user"`
 	jwt.StandardClaims
 }
 
 // GenerateJWT generate token custom claims
-func GenerateJWT(user models.User) string {
+func GenerateJWT(user interface{}) string {
 	// Set custom claims
 	claims := &Claim{
 		user,
