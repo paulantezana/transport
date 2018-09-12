@@ -30,8 +30,6 @@ func PublicApi(e *echo.Echo) {
 
 // =======================================================================================
 // SocketApi
-// Es la comunicacion principal de todo los dispositibos con el servidor central
-// EL CORE del sistema
 func SocketApi(e *echo.Echo) {
 	m := melody.New()
 
