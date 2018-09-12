@@ -14,7 +14,7 @@ func PublicApi(e *echo.Echo) {
     e.GET("/", func(context echo.Context) error {
         return context.NoContent(http.StatusOK)
     })
-    pb := e.Group("/api/v1")
+    pb := e.Group("/api/v1/public")
 
     pb.POST("/user/login", controller.Login)
     pb.POST("/user/forgot/search", controller.ForgotSearch)
