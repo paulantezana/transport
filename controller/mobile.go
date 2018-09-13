@@ -1,13 +1,12 @@
 package controller
 
 import (
-	"crypto/sha256"
-	"fmt"
-	"github.com/labstack/echo"
-	"github.com/paulantezana/transport/config"
-	"github.com/paulantezana/transport/models"
-	"github.com/paulantezana/transport/utilities"
-	"net/http"
+    "fmt"
+    "github.com/labstack/echo"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/models"
+    "github.com/paulantezana/transport/utilities"
+    "net/http"
 )
 
 type loginMobileResponse struct {
@@ -26,14 +25,10 @@ func MobileLogin(c echo.Context) error {
 	db := config.GetConnection()
 	defer db.Close()
 
-	// Hash password
-	cc := sha256.Sum256([]byte(mobile.Password))
-	pwd := fmt.Sprintf("%x", cc)
-
 	// Validate mobile and email
-	if db.Where("name = ? and password = ?", mobile.Name, pwd).First(&mobile).RecordNotFound() {
+	if db.Where("name = ? and key = ?", mobile.Name, mobile.Key).First(&mobile).RecordNotFound() {
 		return c.JSON(http.StatusOK, utilities.Response{
-			Message: fmt.Sprintf("El nombre de usuario o contraseña es incorecta"),
+			Message: fmt.Sprintf("El ID o Clave es incorecta"),
 		})
 	}
 
@@ -43,7 +38,7 @@ func MobileLogin(c echo.Context) error {
 	}
 
 	// Prepare response data
-	mobile.Password = ""
+	mobile.Key = ""
 
 	// get token key
 	token := utilities.GenerateJWT(mobile)
@@ -150,11 +145,6 @@ func CreateMobile(c echo.Context) error {
 	db := config.GetConnection()
 	defer db.Close()
 
-	// Hash password
-	cc := sha256.Sum256([]byte(mobile.Password))
-	pwd := fmt.Sprintf("%x", cc)
-	mobile.Password = pwd
-
 	// Insert mobile in database
 	if err := db.Create(&mobile).Error; err != nil {
 		return c.JSON(http.StatusOK, utilities.Response{
@@ -239,39 +229,5 @@ func DeleteMobile(c echo.Context) error {
 		Success: true,
 		Data:    mobile.ID,
 		Message: fmt.Sprintf("El usuario %s, se elimino correctamente", mobile.Name),
-	})
-}
-
-func ResetPasswordMobile(c echo.Context) error {
-	// Get data request
-	mobile := models.Mobile{}
-	if err := c.Bind(&mobile); err != nil {
-		return err
-	}
-
-	// get connection
-	db := config.GetConnection()
-	defer db.Close()
-
-	// Validation mobile exist
-	if db.First(&mobile, "id = ?", mobile.ID).RecordNotFound() {
-		return c.JSON(http.StatusOK, utilities.Response{
-			Message: fmt.Sprintf("No se encontró el registro con id %d", mobile.ID),
-		})
-	}
-
-	// Set new password
-	cc := sha256.Sum256([]byte(string(mobile.ID) + mobile.Name))
-	pwd := fmt.Sprintf("%x", cc)
-	mobile.Password = pwd
-
-	// Update mobile in database
-	if err := db.Model(&mobile).Update(mobile).Error; err != nil {
-		return err
-	}
-
-	return c.JSON(http.StatusOK, utilities.Response{
-		Success: true,
-		Message: fmt.Sprintf("La contraseña del usuario se reseto extosamente. ahora su numevacontraseña es %s", string(mobile.ID)+mobile.Name),
 	})
 }

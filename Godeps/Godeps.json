@@ -9,6 +9,11 @@
 			"Rev": "06ea1031745cb8b3dab3f6a236daf2b0aa468b7e"
 		},
 		{
+			"ImportPath": "github.com/gorilla/websocket",
+			"Comment": "v1.4.0",
+			"Rev": "66b9c49e59c6c48f0ffce28c2d8b8a5678502c6d"
+		},
+		{
 			"ImportPath": "github.com/jinzhu/gorm",
 			"Comment": "v1.9.1-1-g52c5c81",
 			"Rev": "52c5c8127cf4aeffde3e0aa9222640832075a90f"
@@ -86,6 +91,11 @@
 		{
 			"ImportPath": "golang.org/x/sys/unix",
 			"Rev": "7c1e4f34a39c8bf93b6a3379e4ffb3b118ecc614"
+		},
+		{
+			"ImportPath": "gopkg.in/olahol/melody.v1",
+			"Comment": "v1",
+			"Rev": "d521390733761fe1db13de575c253afd5c743085"
 		}
 	]
 }

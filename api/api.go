@@ -1,14 +1,16 @@
 package api
 
 import (
-	"fmt"
+    "encoding/json"
+    "fmt"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/paulantezana/transport/config"
 	"github.com/paulantezana/transport/controller"
 	"github.com/paulantezana/transport/utilities"
 	"gopkg.in/olahol/melody.v1"
-	"net/http"
+    "log"
+    "net/http"
 )
 
 // PublicApi public routes
@@ -44,7 +46,22 @@ func SocketApi(e *echo.Echo) {
 
 	// Response message
 	m.HandleMessage(func(s *melody.Session, msg []byte) {
-		fmt.Println(msg)
+        var data map[string]interface{}
+
+        err := json.Unmarshal(msg, &data)
+        if err != nil {
+            log.Printf("no se pudo convertir el json recibido: %v", err)
+            return
+        }
+
+        log.Print(data)
+
+        //tipo, ok := data["tipo"]
+        //if !ok {
+        //    log.Printf("el mensaje recibido no tiene tipo")
+        //}
+
+        fmt.Println(msg)
 		m.Broadcast(msg)
 	})
 }
