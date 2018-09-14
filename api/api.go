@@ -1,17 +1,16 @@
 package api
 
 import (
-    "encoding/json"
-    "fmt"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
-	"github.com/paulantezana/transport/config"
-	"github.com/paulantezana/transport/controller"
-	"github.com/paulantezana/transport/utilities"
-	"gopkg.in/olahol/melody.v1"
-    "log"
+    "github.com/labstack/echo"
+    "github.com/labstack/echo/middleware"
+    "github.com/paulantezana/transport/config"
+    "github.com/paulantezana/transport/controller"
+    "github.com/paulantezana/transport/utilities"
     "net/http"
 )
+
+
+
 
 // PublicApi public routes
 func PublicApi(e *echo.Echo) {
@@ -28,42 +27,6 @@ func PublicApi(e *echo.Echo) {
 
 	// Conductor user
 	pb.POST("/mobile/login", controller.MobileLogin)
-}
-
-// =======================================================================================
-// SocketApi
-func SocketApi(e *echo.Echo) {
-	m := melody.New()
-
-	// Create new group routes ws api
-	ws := e.Group("/api/v1/ws")
-
-	// Routes
-	ws.GET("/location", func(c echo.Context) error {
-		m.HandleRequest(c.Response(), c.Request())
-		return nil
-	})
-
-	// Response message
-	m.HandleMessage(func(s *melody.Session, msg []byte) {
-        var data map[string]interface{}
-
-        err := json.Unmarshal(msg, &data)
-        if err != nil {
-            log.Printf("no se pudo convertir el json recibido: %v", err)
-            return
-        }
-
-        log.Print(data)
-
-        //tipo, ok := data["tipo"]
-        //if !ok {
-        //    log.Printf("el mensaje recibido no tiene tipo")
-        //}
-
-        fmt.Println(msg)
-		m.Broadcast(msg)
-	})
 }
 
 // ProtectedApi protected routes
