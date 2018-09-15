@@ -1,11 +1,10 @@
 package api
 
 import (
-	"encoding/json"
-	"github.com/labstack/echo"
-	"github.com/paulantezana/transport/config"
-	"gopkg.in/olahol/melody.v1"
-	"log"
+    "encoding/json"
+    "github.com/labstack/echo"
+    "gopkg.in/olahol/melody.v1"
+    "log"
 )
 
 // =======================================================================================
@@ -47,11 +46,14 @@ func SocketApi(e *echo.Echo) {
 		}
 
 		// get connection
-		db := config.GetConnection()
-		defer db.Close()
+		//db := config.GetConnection()
+		//defer db.Close()
+
+        //if err := db.First(&mobile, mobile.ID).Error; err != nil {
+        //    return err
+        //}
 
 		// get
-
 		exist := false
 		for k, v := range requestLocations {
 			if v.Name == request.Name {

@@ -7,4 +7,5 @@ type Mobile struct {
 	Key        string `json:"key"`
 	Driver     string `json:"driver"`
 	State      bool   `json:"state" gorm:"default:'true'"`
+	Logged     bool   `json:"logged"`
 }
