@@ -32,7 +32,6 @@ func SocketApi(e *echo.Echo) {
 		m.HandleRequest(c.Response(), c.Request())
 		return nil
 	})
-
 	requestLocations := make([]requestLocation, 0)
 
 	// Response message
