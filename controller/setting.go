@@ -12,11 +12,18 @@ import (
 	"path"
 )
 
-type GlobalSettings struct {
+type globalSettings struct {
 	Message string         `json:"message"`
 	Success bool           `json:"success"`
 	Setting models.Setting `json:"setting"`
 	User    models.User    `json:"user"`
+}
+
+type globalSettingMobile struct {
+	Message string         `json:"message"`
+	Success bool           `json:"success"`
+	Setting models.Setting `json:"setting"`
+	Mobile  models.Mobile  `json:"mobile"`
 }
 
 func GetGlobalSettings(c echo.Context) error {
@@ -41,8 +48,37 @@ func GetGlobalSettings(c echo.Context) error {
 	db.First(&con) // Find settings
 
 	// Set object response
-	return c.JSON(http.StatusOK, GlobalSettings{
+	return c.JSON(http.StatusOK, globalSettings{
 		User:    user,
+		Setting: con,
+		Success: true,
+		Message: "OK",
+	})
+}
+
+func GetGlobalSettingsMobile(c echo.Context) error {
+	// Get data request
+	con := models.Setting{}
+	mobile := models.Mobile{}
+	if err := c.Bind(&mobile); err != nil {
+		return err
+	}
+
+	// get connection
+	db := config.GetConnection()
+	defer db.Close()
+
+	// Execute instructions
+	if err := db.First(&mobile, mobile.ID).Error; err != nil {
+		return c.NoContent(http.StatusUnauthorized)
+	}
+	mobile.Key = ""
+
+	db.First(&con) // Find settings
+
+	// Set object response
+	return c.JSON(http.StatusOK, globalSettingMobile{
+		Mobile:  mobile,
 		Setting: con,
 		Success: true,
 		Message: "OK",

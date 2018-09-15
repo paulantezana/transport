@@ -1,12 +1,12 @@
 package controller
 
 import (
-    "fmt"
-    "github.com/labstack/echo"
-    "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/models"
-    "github.com/paulantezana/transport/utilities"
-    "net/http"
+	"fmt"
+	"github.com/labstack/echo"
+	"github.com/paulantezana/transport/config"
+	"github.com/paulantezana/transport/models"
+	"github.com/paulantezana/transport/utilities"
+	"net/http"
 )
 
 type loginMobileResponse struct {

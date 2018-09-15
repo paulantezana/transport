@@ -1,12 +1,12 @@
 package api
 
 import (
-    "github.com/labstack/echo"
-    "github.com/labstack/echo/middleware"
-    "github.com/paulantezana/transport/config"
-    "github.com/paulantezana/transport/controller"
-    "github.com/paulantezana/transport/utilities"
-    "net/http"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"github.com/paulantezana/transport/config"
+	"github.com/paulantezana/transport/controller"
+	"github.com/paulantezana/transport/utilities"
+	"net/http"
 )
 
 // PublicApi public routes
@@ -56,6 +56,7 @@ func ProtectedApi(e *echo.Echo) {
 
 	// Global settings
 	ar.POST("/setting/global", controller.GetGlobalSettings)
+	ar.POST("/setting/global/mobile", controller.GetGlobalSettingsMobile)
 	ar.GET("/setting", controller.GetSetting)
 	ar.PUT("/setting", controller.UpdateSetting)
 	ar.POST("/setting/upload/logo", controller.UploadLogoSetting)
