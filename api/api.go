@@ -9,9 +9,6 @@ import (
     "net/http"
 )
 
-
-
-
 // PublicApi public routes
 func PublicApi(e *echo.Echo) {
 	e.GET("/", func(context echo.Context) error {
