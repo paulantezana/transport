@@ -3,6 +3,7 @@ package api
 import (
     "encoding/json"
     "github.com/labstack/echo"
+    "github.com/paulantezana/transport/config"
     "gopkg.in/olahol/melody.v1"
     "log"
 )
@@ -40,9 +41,18 @@ func SocketApi(e *echo.Echo) {
         request := requestLocation{}
         err := json.Unmarshal(msg, &request)
         if err != nil {
-            log.Printf("no se pudo convertir el json recibido: %v", err)
+            log.Printf("No se pudo convertir el json recibido: %v", err)
             return
         }
+
+        // get connection
+        db := config.GetConnection()
+        defer db.Close()
+
+
+
+        // get
+
 
         exist := false
         for k, v := range requestLocations {
