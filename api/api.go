@@ -47,12 +47,26 @@ func ProtectedApi(e *echo.Echo) {
 	ar.POST("/user/reset/password", controller.ResetPasswordUser)
 	ar.POST("/user/change/password", controller.ChangePasswordUser)
 
-	// Crud user
+	// Crud mobile
 	ar.POST("/mobile/all", controller.GetMobiles)
 	ar.POST("/mobile/by/id", controller.GetMobileByID)
 	ar.POST("/mobile/create", controller.CreateMobile)
 	ar.PUT("/mobile/update", controller.UpdateMobile)
 	ar.DELETE("/mobile/delete", controller.DeleteMobile)
+
+	// Crud mobile
+	ar.POST("/category/all", controller.GetCategories)
+	ar.POST("/category/by/id", controller.GetCategoryByID)
+	ar.POST("/category/create", controller.CreateCategory)
+	ar.PUT("/category/update", controller.UpdateCategory)
+	ar.DELETE("/category/delete", controller.DeleteCategory)
+
+	// Crud mobile
+	ar.POST("/company/all", controller.GetCompanies)
+	ar.POST("/company/by/id", controller.GetCategoryByID)
+	ar.POST("/company/create", controller.CreateCompany)
+	ar.PUT("/company/update", controller.UpdateCompany)
+	ar.DELETE("/company/delete", controller.DeleteCompany)
 
 	// Global settings
 	ar.POST("/setting/global", controller.GetGlobalSettings)

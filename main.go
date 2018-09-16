@@ -51,6 +51,9 @@ func migration() {
 	defer db.Close()
 
 	db.Debug().AutoMigrate(
+	    &models.Category{},
+	    &models.Company{},
+	    &models.Pink{},
 		&models.User{},
 		&models.Mobile{},
 		&models.Setting{},
