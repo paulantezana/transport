@@ -9,7 +9,7 @@ import (
     "net/http"
 )
 
-func GetCategories(c echo.Context) error {
+func GetVehicles(c echo.Context) error {
     // Get data request
     request := utilities.Request{}
     if err := c.Bind(&request); err != nil {
@@ -28,12 +28,12 @@ func GetCategories(c echo.Context) error {
 
     // Check the number of matches
     var total uint
-    categories := make([]models.Category, 0)
+    vehicles := make([]models.Vehicle, 0)
 
-    // Find categories
+    // Find vehicles
     if err := db.Where("lower(name) LIKE lower(?)", "%"+request.Search+"%").
         Order("id desc").
-        Offset(offset).Limit(request.Limit).Find(&categories).
+        Offset(offset).Limit(request.Limit).Find(&vehicles).
         Offset(-1).Limit(-1).Count(&total).
         Error; err != nil {
         return err
@@ -43,16 +43,16 @@ func GetCategories(c echo.Context) error {
     // 0 = all data
     // 1 = minimal data
     if request.Type == 1 {
-        customCategories := make([]models.Category, 0)
-        for _, category := range categories {
-            customCategories = append(customCategories, models.Category{
-                ID:   category.ID,
-                Name: category.Name,
+        customVehicles := make([]models.Vehicle, 0)
+        for _, vehicle := range vehicles {
+            customVehicles = append(customVehicles, models.Vehicle{
+                ID:   vehicle.ID,
+                //Name: vehicle.Name,
             })
         }
         return c.JSON(http.StatusCreated, utilities.ResponsePaginate{
             Success:     true,
-            Data:        customCategories,
+            Data:        customVehicles,
             Total:       total,
             CurrentPage: request.CurrentPage,
         })
@@ -60,16 +60,16 @@ func GetCategories(c echo.Context) error {
     // Return response
     return c.JSON(http.StatusCreated, utilities.ResponsePaginate{
         Success:     true,
-        Data:        categories,
+        Data:        vehicles,
         Total:       total,
         CurrentPage: request.CurrentPage,
     })
 }
 
-func GetCategoryByID(c echo.Context) error {
+func GetVehicleByID(c echo.Context) error {
     // Get data request
-    category := models.Category{}
-    if err := c.Bind(&category); err != nil {
+    vehicle := models.Vehicle{}
+    if err := c.Bind(&vehicle); err != nil {
         return err
     }
 
@@ -78,21 +78,21 @@ func GetCategoryByID(c echo.Context) error {
     defer db.Close()
 
     // Execute instructions
-    if err := db.First(&category, category.ID).Error; err != nil {
+    if err := db.First(&vehicle, vehicle.ID).Error; err != nil {
         return err
     }
 
     // Return response
     return c.JSON(http.StatusCreated, utilities.Response{
         Success: true,
-        Data:    category,
+        Data:    vehicle,
     })
 }
 
-func CreateCategory(c echo.Context) error {
+func CreateVehicle(c echo.Context) error {
     // Get data request
-    category := models.Category{}
-    if err := c.Bind(&category); err != nil {
+    vehicle := models.Vehicle{}
+    if err := c.Bind(&vehicle); err != nil {
         return err
     }
 
@@ -100,8 +100,8 @@ func CreateCategory(c echo.Context) error {
     db := config.GetConnection()
     defer db.Close()
 
-    // Insert category in database
-    if err := db.Create(&category).Error; err != nil {
+    // Insert vehicle in database
+    if err := db.Create(&vehicle).Error; err != nil {
         return c.JSON(http.StatusOK, utilities.Response{
             Message: fmt.Sprintf("%s", err),
         })
@@ -110,38 +110,38 @@ func CreateCategory(c echo.Context) error {
     // Return response
     return c.JSON(http.StatusCreated, utilities.Response{
         Success: true,
-        Data:    category.ID,
-        Message: fmt.Sprintf("El usuario %s se registro exitosamente", category.Name),
+        Data:    vehicle.ID,
+        Message: fmt.Sprintf("El usuario %s se registro exitosamente", vehicle.Name),
     })
 }
 
-func UpdateCategory(c echo.Context) error {
+func UpdateVehicle(c echo.Context) error {
     // Get data request
-    newCategory := models.Category{}
-    if err := c.Bind(&newCategory); err != nil {
+    newVehicle := models.Vehicle{}
+    if err := c.Bind(&newVehicle); err != nil {
         return err
     }
-    oldCategory := models.Category{
-        ID: newCategory.ID,
+    oldVehicle := models.Vehicle{
+        ID: newVehicle.ID,
     }
 
     // get connection
     db := config.GetConnection()
     defer db.Close()
 
-    // Validation category exist
-    if db.First(&oldCategory).RecordNotFound() {
+    // Validation vehicle exist
+    if db.First(&oldVehicle).RecordNotFound() {
         return c.JSON(http.StatusOK, utilities.Response{
-            Message: fmt.Sprintf("No se encontró el registro con id %d", oldCategory.ID),
+            Message: fmt.Sprintf("No se encontró el registro con id %d", oldVehicle.ID),
         })
     }
 
-    // Update category in database
-    if err := db.Model(&newCategory).Update(newCategory).Error; err != nil {
+    // Update vehicle in database
+    if err := db.Model(&newVehicle).Update(newVehicle).Error; err != nil {
         return err
     }
-    if !newCategory.State {
-        if err := db.Model(newCategory).UpdateColumn("state", false).Error; err != nil {
+    if !newVehicle.State {
+        if err := db.Model(newVehicle).UpdateColumn("state", false).Error; err != nil {
             return err
         }
     }
@@ -149,15 +149,15 @@ func UpdateCategory(c echo.Context) error {
     // Return response
     return c.JSON(http.StatusOK, utilities.Response{
         Success: true,
-        Data:    newCategory.ID,
-        Message: fmt.Sprintf("Los datos del usuario %s, se actualizarón correctamente", oldCategory.Name),
+        Data:    newVehicle.ID,
+        Message: fmt.Sprintf("Los datos del usuario %s, se actualizarón correctamente", oldVehicle.Name),
     })
 }
 
-func DeleteCategory(c echo.Context) error {
+func DeleteVehicle(c echo.Context) error {
     // Get data request
-    category := models.Category{}
-    if err := c.Bind(&category); err != nil {
+    vehicle := models.Vehicle{}
+    if err := c.Bind(&vehicle); err != nil {
         return err
     }
 
@@ -165,15 +165,15 @@ func DeleteCategory(c echo.Context) error {
     db := config.GetConnection()
     defer db.Close()
 
-    // Validation category exist
-    if db.First(&category).RecordNotFound() {
+    // Validation vehicle exist
+    if db.First(&vehicle).RecordNotFound() {
         return c.JSON(http.StatusOK, utilities.Response{
-            Message: fmt.Sprintf("No se encontró el registro con id %d", category.ID),
+            Message: fmt.Sprintf("No se encontró el registro con id %d", vehicle.ID),
         })
     }
 
-    // Delete category in database
-    if err := db.Delete(&category).Error; err != nil {
+    // Delete vehicle in database
+    if err := db.Delete(&vehicle).Error; err != nil {
         return c.JSON(http.StatusOK, utilities.Response{
             Message: fmt.Sprintf("%s", err),
         })
@@ -182,7 +182,7 @@ func DeleteCategory(c echo.Context) error {
     // Return response
     return c.JSON(http.StatusOK, utilities.Response{
         Success: true,
-        Data:    category.ID,
-        Message: fmt.Sprintf("El usuario %s, se elimino correctamente", category.Name),
+        Data:    vehicle.ID,
+        Message: fmt.Sprintf("El usuario %s, se elimino correctamente", vehicle.Name),
     })
 }
