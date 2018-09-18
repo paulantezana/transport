@@ -112,6 +112,7 @@ func CreateCompany(c echo.Context) error {
         })
     }
 
+    // ==========================================================================
     // Create new user with company id
     user := models.User{}
 
@@ -123,6 +124,7 @@ func CreateCompany(c echo.Context) error {
     user.Password = pwd
     user.UserName = company.Ruc
     user.Profile = "company"
+    user.CompanyID = company.ID
 
     // Insert user in database
     if err := tx.Create(&user).Error; err != nil {
@@ -132,12 +134,13 @@ func CreateCompany(c echo.Context) error {
         })
     }
     tx.Commit()
+    // ==========================================================================
 
     // Return response
     return c.JSON(http.StatusCreated, utilities.Response{
         Success: true,
         Data:    company.ID,
-        Message: fmt.Sprintf("El usuario %s se registro exitosamente", company.Name),
+        Message: fmt.Sprintf("La empresa %s se registro exitosamente", company.Name),
     })
 }
 
