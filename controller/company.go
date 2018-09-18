@@ -1,6 +1,7 @@
 package controller
 
 import (
+    "crypto/sha256"
     "fmt"
     "github.com/labstack/echo"
     "github.com/paulantezana/transport/config"
@@ -100,12 +101,37 @@ func CreateCompany(c echo.Context) error {
     db := config.GetConnection()
     defer db.Close()
 
+    // begin a transaction
+    tx := db.Begin()
+
     // Insert company in database
-    if err := db.Create(&company).Error; err != nil {
+    if err := tx.Create(&company).Error; err != nil {
+        tx.Rollback()
         return c.JSON(http.StatusOK, utilities.Response{
             Message: fmt.Sprintf("%s", err),
         })
     }
+
+    // Create new user with company id
+    user := models.User{}
+
+    // Hash password
+    cc := sha256.Sum256([]byte(company.Ruc))
+    pwd := fmt.Sprintf("%x", cc)
+
+    // Fill user data
+    user.Password = pwd
+    user.UserName = company.Ruc
+    user.Profile = "company"
+
+    // Insert user in database
+    if err := tx.Create(&user).Error; err != nil {
+        tx.Rollback()
+        return c.JSON(http.StatusOK, utilities.Response{
+            Message: fmt.Sprintf("%s", err),
+        })
+    }
+    tx.Commit()
 
     // Return response
     return c.JSON(http.StatusCreated, utilities.Response{

@@ -9,7 +9,7 @@ import (
     "net/http"
 )
 
-func GetCategories(c echo.Context) error {
+func GetCategoriesPaginate(c echo.Context) error {
     // Get data request
     request := utilities.Request{}
     if err := c.Bind(&request); err != nil {
@@ -63,6 +63,26 @@ func GetCategories(c echo.Context) error {
         Data:        categories,
         Total:       total,
         CurrentPage: request.CurrentPage,
+    })
+}
+
+func GetCategoriesAll(c echo.Context) error {
+    // Get connection
+    db := config.GetConnection()
+    defer db.Close()
+
+    // Check the number of matches
+    categories := make([]models.Category, 0)
+
+    // Find categories
+    if err := db.Find(&categories).Error; err != nil  {
+        return err
+    }
+
+    // Return response
+    return c.JSON(http.StatusCreated, utilities.Response{
+        Success:     true,
+        Data:        categories,
     })
 }
 

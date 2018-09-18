@@ -55,7 +55,8 @@ func ProtectedApi(e *echo.Echo) {
 	ar.DELETE("/mobile/delete", controller.DeleteMobile)
 
 	// Crud mobile
-	ar.POST("/category/all", controller.GetCategories)
+	ar.POST("/category/paginate", controller.GetCategoriesPaginate)
+	ar.POST("/category/all", controller.GetCategoriesAll)
 	ar.POST("/category/by/id", controller.GetCategoryByID)
 	ar.POST("/category/create", controller.CreateCategory)
 	ar.PUT("/category/update", controller.UpdateCategory)
