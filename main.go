@@ -57,7 +57,15 @@ func migration() {
 		&models.User{},
 		&models.Mobile{},
 		&models.Setting{},
+		&models.Vehicle{},
+		&models.Rute{},
 	)
+
+    db.Model(&models.Mobile{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+    db.Model(&models.Vehicle{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+
+    db.Model(&models.Pink{}).AddForeignKey("vehicle_id", "vehicles(id)", "RESTRICT", "RESTRICT")
+
 
 	// -------------------------------------------------------------
 	// INSERT FIST DATA --------------------------------------------
