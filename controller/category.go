@@ -9,63 +9,6 @@ import (
 	"net/http"
 )
 
-func GetCategoriesPaginate(c echo.Context) error {
-	// Get data request
-	request := utilities.Request{}
-	if err := c.Bind(&request); err != nil {
-		return err
-	}
-
-	// Get connection
-	db := config.GetConnection()
-	defer db.Close()
-
-	// Pagination calculate
-	if request.CurrentPage == 0 {
-		request.CurrentPage = 1
-	}
-	offset := request.Limit*request.CurrentPage - request.Limit
-
-	// Check the number of matches
-	var total uint
-	categories := make([]models.Category, 0)
-
-	// Find categories
-	if err := db.Where("lower(name) LIKE lower(?)", "%"+request.Search+"%").
-		Order("id desc").
-		Offset(offset).Limit(request.Limit).Find(&categories).
-		Offset(-1).Limit(-1).Count(&total).
-		Error; err != nil {
-		return err
-	}
-
-	// Type response
-	// 0 = all data
-	// 1 = minimal data
-	if request.Type == 1 {
-		customCategories := make([]models.Category, 0)
-		for _, category := range categories {
-			customCategories = append(customCategories, models.Category{
-				ID:   category.ID,
-				Name: category.Name,
-			})
-		}
-		return c.JSON(http.StatusCreated, utilities.ResponsePaginate{
-			Success:     true,
-			Data:        customCategories,
-			Total:       total,
-			CurrentPage: request.CurrentPage,
-		})
-	}
-	// Return response
-	return c.JSON(http.StatusCreated, utilities.ResponsePaginate{
-		Success:     true,
-		Data:        categories,
-		Total:       total,
-		CurrentPage: request.CurrentPage,
-	})
-}
-
 func GetCategoriesAll(c echo.Context) error {
 	// Get connection
 	db := config.GetConnection()
@@ -159,11 +102,6 @@ func UpdateCategory(c echo.Context) error {
 	// Update category in database
 	if err := db.Model(&newCategory).Update(newCategory).Error; err != nil {
 		return err
-	}
-	if !newCategory.State {
-		if err := db.Model(newCategory).UpdateColumn("state", false).Error; err != nil {
-			return err
-		}
 	}
 
 	// Return response

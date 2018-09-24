@@ -58,11 +58,13 @@ func migration() {
 		&models.Mobile{},
 		&models.Setting{},
 		&models.Vehicle{},
+		&models.VehicleAuthorized{},
 		&models.Rute{},
 	)
 
 	db.Model(&models.Mobile{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
-	db.Model(&models.Vehicle{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.VehicleAuthorized{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.VehicleAuthorized{}).AddForeignKey("vehicle_id", "vehicles(id)", "RESTRICT", "RESTRICT")
 
 	db.Model(&models.Pink{}).AddForeignKey("vehicle_id", "vehicles(id)", "RESTRICT", "RESTRICT")
 

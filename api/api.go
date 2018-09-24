@@ -55,7 +55,6 @@ func ProtectedApi(e *echo.Echo) {
 	ar.DELETE("/mobile/delete", controller.DeleteMobile)
 
 	// Crud mobile
-	ar.POST("/category/paginate", controller.GetCategoriesPaginate)
 	ar.POST("/category/all", controller.GetCategoriesAll)
 	ar.POST("/category/by/id", controller.GetCategoryByID)
 	ar.POST("/category/create", controller.CreateCategory)
@@ -64,7 +63,7 @@ func ProtectedApi(e *echo.Echo) {
 
 	// Crud company
 	ar.POST("/company/all", controller.GetCompanies)
-	ar.POST("/company/by/id", controller.GetCategoryByID)
+	ar.POST("/company/by/id", controller.GetCompanyByID)
 	ar.POST("/company/create", controller.CreateCompany)
 	ar.PUT("/company/update", controller.UpdateCompany)
 	ar.DELETE("/company/delete", controller.DeleteCompany)
