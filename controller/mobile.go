@@ -2,8 +2,8 @@ package controller
 
 import (
 	"fmt"
-    "github.com/dgrijalva/jwt-go"
-    "github.com/labstack/echo"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/labstack/echo"
 	"github.com/paulantezana/transport/config"
 	"github.com/paulantezana/transport/models"
 	"github.com/paulantezana/transport/utilities"
@@ -41,8 +41,8 @@ func MobileLogin(c echo.Context) error {
 	// Prepare response data
 	mobile.Key = ""
 
-    // get token key
-    token := utilities.GenerateJWTMobile(mobile)
+	// get token key
+	token := utilities.GenerateJWTMobile(mobile)
 
 	// Login success
 	return c.JSON(http.StatusOK, utilities.Response{
@@ -56,10 +56,10 @@ func MobileLogin(c echo.Context) error {
 }
 
 func GetMobiles(c echo.Context) error {
-    // Get user token authenticate
-    user := c.Get("user").(*jwt.Token)
-    claims := user.Claims.(*utilities.Claim)
-    currentUser := claims.User
+	// Get user token authenticate
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utilities.Claim)
+	currentUser := claims.User
 
 	// Get data request
 	request := utilities.Request{}
@@ -141,10 +141,10 @@ func GetMobileByID(c echo.Context) error {
 }
 
 func CreateMobile(c echo.Context) error {
-    // Get user token authenticate
-    user := c.Get("user").(*jwt.Token)
-    claims := user.Claims.(*utilities.Claim)
-    currentUser := claims.User
+	// Get user token authenticate
+	user := c.Get("user").(*jwt.Token)
+	claims := user.Claims.(*utilities.Claim)
+	currentUser := claims.User
 
 	// Get data request
 	mobile := models.Mobile{}
@@ -153,15 +153,15 @@ func CreateMobile(c echo.Context) error {
 	}
 
 	// Set company id
-    if mobile.CompanyID == 0 {
-        mobile.CompanyID = currentUser.CompanyID
-    }
+	if mobile.CompanyID == 0 {
+		mobile.CompanyID = currentUser.CompanyID
+	}
 
-    if mobile.CompanyID == 0 {
-        return c.JSON(http.StatusOK, utilities.Response{
-            Message: fmt.Sprintf("No se signo ninguna empresa a este mobil"),
-        })
-    }
+	if mobile.CompanyID == 0 {
+		return c.JSON(http.StatusOK, utilities.Response{
+			Message: fmt.Sprintf("No se signo ninguna empresa a este mobil"),
+		})
+	}
 
 	// get connection
 	db := config.GetConnection()

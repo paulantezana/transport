@@ -51,9 +51,9 @@ func migration() {
 	defer db.Close()
 
 	db.Debug().AutoMigrate(
-	    &models.Category{},
-	    &models.Company{},
-	    &models.Pink{},
+		&models.Category{},
+		&models.Company{},
+		&models.Pink{},
 		&models.User{},
 		&models.Mobile{},
 		&models.Setting{},
@@ -61,46 +61,49 @@ func migration() {
 		&models.Rute{},
 	)
 
-    db.Model(&models.Mobile{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
-    db.Model(&models.Vehicle{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Mobile{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Vehicle{}).AddForeignKey("company_id", "companies(id)", "RESTRICT", "RESTRICT")
 
-    db.Model(&models.Pink{}).AddForeignKey("vehicle_id", "vehicles(id)", "RESTRICT", "RESTRICT")
+	db.Model(&models.Pink{}).AddForeignKey("vehicle_id", "vehicles(id)", "RESTRICT", "RESTRICT")
 
+	db.Model(&models.Company{}).AddForeignKey("category_id", "categories(id)", "RESTRICT", "RESTRICT")
+
+	//db.Model(&models.Category{}).AddForeignKey("category_parent_id", "categories(id)", "RESTRICT", "RESTRICT")
 
 	// -------------------------------------------------------------
 	// INSERT FIST DATA --------------------------------------------
 	// -------------------------------------------------------------
 	usr := models.User{}
 	db.First(&usr)
-
-	// hash password
-	cc := sha256.Sum256([]byte("admin"))
-	pwd := fmt.Sprintf("%x", cc)
-
-	// create model
-	user := models.User{
-		UserName: "admin",
-		Password: pwd,
-		Profile:  "admin",
-		Email:    "yoel.antezana@gmail.com",
-	}
-
-	// insert database
+	// Validate
 	if usr.ID == 0 {
+		// hash password
+		cc := sha256.Sum256([]byte("admin"))
+		pwd := fmt.Sprintf("%x", cc)
+
+		// create model
+		user := models.User{
+			UserName: "admin",
+			Password: pwd,
+			Profile:  "admin",
+			Email:    "yoel.antezana@gmail.com",
+		}
 		db.Create(&user)
 	}
 
+	// =======================
 	// First Setting
+	// =======================
 	cg := models.Setting{}
 	db.First(&cg)
-	co := models.Setting{
-		Item:    10,
-		Company: "TRANSPORT WEB",
-		Logo:    "static/logo.png",
-	}
 
-	// Insert database
+	// Validate
 	if cg.ID == 0 {
+		co := models.Setting{
+			Item:    10,
+			Company: "TRANSPORT WEB",
+			Logo:    "static/logo.png",
+		}
 		db.Create(&co)
 	}
 }

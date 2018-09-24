@@ -8,6 +8,6 @@ type Pink struct {
 	Latitude  float64   `json:"latitude"`
 	Longitude float64   `json:"longitude"`
 	DatePiker time.Time `json:"date_piker"`
-	
+
 	VehicleID uint `json:"vehicle_id"`
 }
