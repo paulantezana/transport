@@ -18,7 +18,7 @@ func GetCategoriesAll(c echo.Context) error {
 	categories := make([]models.Category, 0)
 
 	// Find categories
-	if err := db.Debug().Order("id desc").Find(&categories).Error; err != nil {
+	if err := db.Order("id desc").Find(&categories).Error; err != nil {
 		return err
 	}
 

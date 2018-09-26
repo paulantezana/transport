@@ -1,8 +1,13 @@
 {
 	"ImportPath": "github.com/paulantezana/transport",
-	"GoVersion": "go1.10",
+	"GoVersion": "go1.11",
 	"GodepVersion": "v80",
 	"Deps": [
+		{
+			"ImportPath": "github.com/360EntSecGroup-Skylar/excelize",
+			"Comment": "v1.3.0-44-g3e004d9",
+			"Rev": "3e004d900b103379c2d62657a3070de4a2e8585a"
+		},
 		{
 			"ImportPath": "github.com/dgrijalva/jwt-go",
 			"Comment": "v3.2.0",
@@ -71,6 +76,10 @@
 			"ImportPath": "github.com/mattn/go-isatty",
 			"Comment": "v0.0.3-7-g6ca4dbf",
 			"Rev": "6ca4dbf54d38eea1a992b3c722a76a5d1c4cb25c"
+		},
+		{
+			"ImportPath": "github.com/mohae/deepcopy",
+			"Rev": "c48cc78d482608239f6c4c92a4abd87eb8761c90"
 		},
 		{
 			"ImportPath": "github.com/valyala/bytebufferpool",

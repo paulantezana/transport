@@ -69,11 +69,25 @@ func ProtectedApi(e *echo.Echo) {
 	ar.DELETE("/company/delete", controller.DeleteCompany)
 
 	// Crud vehicle
-	ar.POST("/vehicle/all", controller.GetVehicles)
+	ar.POST("/vehicle/paginate/by/company/id", controller.GetVehiclesPaginateByCompanyID)
 	ar.POST("/vehicle/by/id", controller.GetVehicleByID)
 	ar.POST("/vehicle/create", controller.CreateVehicle)
 	ar.PUT("/vehicle/update", controller.UpdateVehicle)
 	ar.DELETE("/vehicle/delete", controller.DeleteVehicle)
+
+    // Crud vehicle
+    ar.POST("/journey/all/by/company/id", controller.GetJourneys)
+    ar.POST("/journey/by/id", controller.GetJourneyByID)
+    ar.POST("/journey/create", controller.CreateJourney)
+    ar.PUT("/journey/update", controller.UpdateJourney)
+    ar.DELETE("/journey/delete", controller.DeleteJourney)
+
+    // Crud vehicle
+    ar.POST("/journeyDetail/all", controller.GetJourneyDetails)
+    ar.POST("/journeyDetail/by/id", controller.GetJourneyDetailByID)
+    ar.POST("/journeyDetail/create", controller.CreateJourneyDetail)
+    ar.PUT("/journeyDetail/update", controller.UpdateJourneyDetail)
+    ar.DELETE("/journeyDetail/delete", controller.DeleteJourneyDetail)
 
 	// Global settings
 	ar.POST("/setting/global", controller.GetGlobalSettings)

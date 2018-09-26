@@ -38,7 +38,7 @@ func Login(c echo.Context) error {
 
 	// Validate user and email
 	if db.Where("user_name = ? and password = ?", user.UserName, pwd).First(&user).RecordNotFound() {
-		if db.Debug().Where("email = ? and password = ?", user.UserName, pwd).First(&user).RecordNotFound() {
+		if db.Where("email = ? and password = ?", user.UserName, pwd).First(&user).RecordNotFound() {
 			return c.JSON(http.StatusOK, utilities.Response{
 				Message: "El nombre de usuario o contraseña es incorecta",
 			})

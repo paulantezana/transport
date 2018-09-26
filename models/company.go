@@ -11,8 +11,8 @@ type Company struct {
 
 	CategoryID uint `json:"category_id"`
 
-	Mobiles  []Mobile  `json:"mobiles"`
-    VehicleAuthorizations []VehicleAuthorized `json:"vehicle_authorizations"`
+	Mobiles               []Mobile            `json:"mobiles"`
+	VehicleAuthorizations []VehicleAuthorized `json:"vehicle_authorizations"`
 }
 
 func (Company) TableName() string {
